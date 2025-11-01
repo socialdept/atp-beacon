@@ -100,17 +100,17 @@ class Beacon
     /**
      * Resolve an identity (DID or handle) to its DID Document.
      *
-     * @param string $identifier A DID or handle
+     * @param string $actor A DID or handle
      * @param bool $useCache
      * @return DidDocument
      * @throws DidResolutionException
      * @throws HandleResolutionException
      */
-    public function resolveIdentity(string $identifier, bool $useCache = true): DidDocument
+    public function resolveIdentity(string $actor, bool $useCache = true): DidDocument
     {
-        return Identity::isDid($identifier)
-            ? $this->resolveDid($identifier, $useCache)
-            : $this->resolveHandle($identifier, $useCache);
+        return Identity::isDid($actor)
+            ? $this->resolveDid($actor, $useCache)
+            : $this->resolveHandle($actor, $useCache);
     }
 
     /**
