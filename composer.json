@@ -1,22 +1,20 @@
 {
     "name": "socialdept/atp-beacon",
-    "description": ":package_description",
+    "description": "Resolve AT Protocol DIDs, handles, and lexicon schemas in Laravel",
+    "type": "library",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Author Name",
-            "email": "author@email.com",
-            "homepage": "http://author.com"
-        }
-    ],
-    "homepage": "https://github.com/social-dept/beacon",
-    "keywords": ["Laravel", "Beacon"],
     "require": {
-        "illuminate/support": "~9"
+        "php": "^8.2",
+        "ext-gmp": "*",
+        "illuminate/support": "^11.0|^12.0",
+        "illuminate/console": "^11.0|^12.0",
+        "illuminate/cache": "^11.0|^12.0",
+        "guzzlehttp/guzzle": "^7.5"
     },
     "require-dev": {
-        "phpunit/phpunit": "~9.0",
-        "orchestra/testbench": "~7"
+        "orchestra/testbench": "^9.0",
+        "phpunit/phpunit": "^11.0",
+        "friendsofphp/php-cs-fixer": "^3.89"
     },
     "autoload": {
         "psr-4": {
@@ -25,7 +23,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "SocialDept\\Beacon\\Tests\\": "tests"
+            "SocialDept\\Beacon\\Tests\\": "tests/"
         }
     },
     "extra": {
