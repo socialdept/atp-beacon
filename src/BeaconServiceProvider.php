@@ -3,80 +3,77 @@
 namespace SocialDept\Beacon;
 
 use Illuminate\Support\ServiceProvider;
+use SocialDept\Beacon\Cache\LaravelCacheStore;
+use SocialDept\Beacon\Contracts\CacheStore;
+use SocialDept\Beacon\Contracts\DidResolver;
+use SocialDept\Beacon\Contracts\HandleResolver;
+use SocialDept\Beacon\Resolvers\AtProtoHandleResolver;
+use SocialDept\Beacon\Resolvers\DidResolverManager;
 
 class BeaconServiceProvider extends ServiceProvider
 {
     /**
-     * Perform post-registration booting of services.
-     *
-     * @return void
+     * Register any package services.
+     */
+    public function register(): void
+    {
+        $this->mergeConfigFrom(__DIR__.'/../config/beacon.php', 'beacon');
+
+        // Register cache store
+        $this->app->singleton(CacheStore::class, function ($app) {
+            return new LaravelCacheStore($app->make('cache')->store());
+        });
+
+        // Register DID resolver
+        $this->app->singleton(DidResolver::class, function ($app) {
+            return new DidResolverManager();
+        });
+
+        // Register handle resolver
+        $this->app->singleton(HandleResolver::class, function ($app) {
+            return new AtProtoHandleResolver();
+        });
+
+        // Register Beacon service
+        $this->app->singleton('beacon', function ($app) {
+            return new Beacon(
+                $app->make(DidResolver::class),
+                $app->make(HandleResolver::class),
+                $app->make(CacheStore::class),
+            );
+        });
+
+        $this->app->alias('beacon', Beacon::class);
+    }
+
+    /**
+     * Bootstrap the application services.
      */
     public function boot(): void
     {
-        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'social-dept');
-        // $this->loadViewsFrom(__DIR__.'/../resources/views', 'social-dept');
-        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        // $this->loadRoutesFrom(__DIR__.'/routes.php');
-
-        // Publishing is only necessary when using the CLI.
         if ($this->app->runningInConsole()) {
             $this->bootForConsole();
         }
     }
 
     /**
-     * Register any package services.
-     *
-     * @return void
-     */
-    public function register(): void
-    {
-        $this->mergeConfigFrom(__DIR__.'/../config/beacon.php', 'beacon');
-
-        // Register the service the package provides.
-        $this->app->singleton('beacon', function ($app) {
-            return new Beacon;
-        });
-    }
-
-    /**
      * Get the services provided by the provider.
      *
-     * @return array
+     * @return array<string>
      */
-    public function provides()
+    public function provides(): array
     {
-        return ['beacon'];
+        return ['beacon', Beacon::class];
     }
 
     /**
      * Console-specific booting.
-     *
-     * @return void
      */
     protected function bootForConsole(): void
     {
-        // Publishing the configuration file.
+        // Publish config
         $this->publishes([
             __DIR__.'/../config/beacon.php' => config_path('beacon.php'),
-        ], 'beacon.config');
-
-        // Publishing the views.
-        /*$this->publishes([
-            __DIR__.'/../resources/views' => base_path('resources/views/vendor/social-dept'),
-        ], 'beacon.views');*/
-
-        // Publishing assets.
-        /*$this->publishes([
-            __DIR__.'/../resources/assets' => public_path('vendor/social-dept'),
-        ], 'beacon.assets');*/
-
-        // Publishing the translation files.
-        /*$this->publishes([
-            __DIR__.'/../resources/lang' => resource_path('lang/vendor/social-dept'),
-        ], 'beacon.lang');*/
-
-        // Registering package commands.
-        // $this->commands([]);
+        ], 'beacon-config');
     }
 }
