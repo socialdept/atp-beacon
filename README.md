@@ -39,9 +39,12 @@ $document = Beacon::resolveDid('did:plc:ewvi7nxzyoun6zhxrhs64oiz');
 $handle = $document->getHandle(); // "user.bsky.social"
 $pds = $document->getPdsEndpoint(); // "https://bsky.social"
 
-// Resolve a handle to its DID
-$did = Beacon::resolveHandle('user.bsky.social');
+// Convert a handle to its DID
+$did = Beacon::handleToDid('user.bsky.social');
 // "did:plc:ewvi7nxzyoun6zhxrhs64oiz"
+
+// Resolve any identity (DID or handle) to a document
+$document = Beacon::resolveIdentity('alice.bsky.social');
 
 // Find someone's PDS endpoint
 $pds = Beacon::resolvePds('alice.bsky.social');
@@ -83,14 +86,33 @@ $services = $document->service;
 
 ### Resolving Handles
 
-Convert human-readable handles to DIDs:
+Convert human-readable handles to DIDs or DID documents:
 
 ```php
-$did = Beacon::resolveHandle('alice.bsky.social');
+// Convert handle to DID string
+$did = Beacon::handleToDid('alice.bsky.social');
 // "did:plc:ewvi7nxzyoun6zhxrhs64oiz"
 
-// Get the full DID document
-$document = Beacon::resolveHandleToDid('alice.bsky.social');
+// Resolve handle to full DID document
+$document = Beacon::resolveHandle('alice.bsky.social');
+$handle = $document->getHandle();
+$pds = $document->getPdsEndpoint();
+```
+
+### Resolving Identities
+
+Automatically detect and resolve either DIDs or handles:
+
+```php
+// Works with DIDs
+$document = Beacon::resolveIdentity('did:plc:ewvi7nxzyoun6zhxrhs64oiz');
+
+// Works with handles
+$document = Beacon::resolveIdentity('alice.bsky.social');
+
+// Perfect for user input where type is unknown
+$actor = $request->input('actor'); // Could be DID or handle
+$document = Beacon::resolveIdentity($actor);
 ```
 
 ### Finding PDS Endpoints
@@ -133,7 +155,8 @@ Pass `false` as the second parameter to bypass cache:
 
 ```php
 $document = Beacon::resolveDid('did:plc:abc123', useCache: false);
-$did = Beacon::resolveHandle('alice.bsky.social', useCache: false);
+$did = Beacon::handleToDid('alice.bsky.social', useCache: false);
+$document = Beacon::resolveIdentity('alice.bsky.social', useCache: false);
 $pds = Beacon::resolvePds('alice.bsky.social', useCache: false);
 ```
 
@@ -260,7 +283,7 @@ try {
 }
 
 try {
-    $did = Beacon::resolveHandle('invalid-handle');
+    $did = Beacon::handleToDid('invalid-handle');
 } catch (HandleResolutionException $e) {
     // Handle handle resolution errors
 }
@@ -285,7 +308,7 @@ $client = new AtProtoClient($pds);
 ```php
 // Resolve multiple handles efficiently (caching kicks in)
 $dids = collect(['alice.bsky.social', 'bob.bsky.social'])
-    ->map(fn($handle) => Beacon::resolveHandle($handle))
+    ->map(fn($handle) => Beacon::handleToDid($handle))
     ->all();
 ```
 
@@ -293,7 +316,7 @@ $dids = collect(['alice.bsky.social', 'bob.bsky.social'])
 
 ```php
 // Get complete identity information
-$document = Beacon::resolveHandleToDid($username);
+$document = Beacon::resolveIdentity($username);
 
 $profile = [
     'did' => $document->id,
@@ -309,14 +332,17 @@ use SocialDept\Beacon\Support\Identity;
 use SocialDept\Beacon\Facades\Beacon;
 
 // Validate user input before resolving
-$userInput = request()->input('identifier');
+$actor = request()->input('actor');
 
-if (Identity::isHandle($userInput)) {
-    $did = Beacon::resolveHandle($userInput);
-} elseif (Identity::isDid($userInput)) {
-    $document = Beacon::resolveDid($userInput);
+if (Identity::isHandle($actor) || Identity::isDid($actor)) {
+    $document = Beacon::resolveIdentity($actor);
 } else {
     abort(422, 'Invalid handle or DID');
+}
+
+// Or convert handle to DID
+if (Identity::isHandle($actor)) {
+    $did = Beacon::handleToDid($actor);
 }
 ```
 
