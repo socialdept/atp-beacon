@@ -1,8 +1,8 @@
 <?php
 
-namespace SocialDept\Beacon\Exceptions;
+namespace SocialDept\Resolver\Exceptions;
 
-class HandleResolutionException extends BeaconException
+class HandleResolutionException extends ResolverException
 {
     /**
      * Create a new exception for invalid handle format.

@@ -1,10 +1,10 @@
 <?php
 
-namespace SocialDept\Beacon\Tests\Unit;
+namespace SocialDept\Resolver\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SocialDept\Beacon\Exceptions\DidResolutionException;
-use SocialDept\Beacon\Resolvers\PlcDidResolver;
+use SocialDept\Resolver\Exceptions\DidResolutionException;
+use SocialDept\Resolver\Resolvers\PlcDidResolver;
 
 class PlcDidResolverTest extends TestCase
 {

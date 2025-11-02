@@ -1,6 +1,6 @@
 <?php
 
-namespace SocialDept\Beacon\Support\Concerns;
+namespace SocialDept\Resolver\Support\Concerns;
 
 trait HasConfig
 {

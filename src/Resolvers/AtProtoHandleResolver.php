@@ -1,12 +1,12 @@
 <?php
 
-namespace SocialDept\Beacon\Resolvers;
+namespace SocialDept\Resolver\Resolvers;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use SocialDept\Beacon\Contracts\HandleResolver;
-use SocialDept\Beacon\Exceptions\HandleResolutionException;
-use SocialDept\Beacon\Support\Concerns\HasConfig;
+use SocialDept\Resolver\Contracts\HandleResolver;
+use SocialDept\Resolver\Exceptions\HandleResolutionException;
+use SocialDept\Resolver\Support\Concerns\HasConfig;
 
 class AtProtoHandleResolver implements HandleResolver
 {
@@ -23,9 +23,9 @@ class AtProtoHandleResolver implements HandleResolver
      */
     public function __construct(?string $pdsEndpoint = null, ?int $timeout = null)
     {
-        $this->pdsEndpoint = $pdsEndpoint ?? $this->getConfig('beacon.pds_endpoint', 'https://bsky.social');
+        $this->pdsEndpoint = $pdsEndpoint ?? $this->getConfig('resolver.pds_endpoint', 'https://bsky.social');
         $this->client = new Client([
-            'timeout' => $timeout ?? $this->getConfig('beacon.timeout', 10),
+            'timeout' => $timeout ?? $this->getConfig('resolver.timeout', 10),
             'headers' => [
                 'Accept' => 'application/json',
                 'User-Agent' => 'Beacon/1.0',

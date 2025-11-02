@@ -1,15 +1,15 @@
 <?php
 
-namespace SocialDept\Beacon\Tests\Unit;
+namespace SocialDept\Resolver\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SocialDept\Beacon\Beacon;
-use SocialDept\Beacon\Contracts\CacheStore;
-use SocialDept\Beacon\Contracts\DidResolver;
-use SocialDept\Beacon\Contracts\HandleResolver;
-use SocialDept\Beacon\Data\DidDocument;
+use SocialDept\Resolver\Resolver;
+use SocialDept\Resolver\Contracts\CacheStore;
+use SocialDept\Resolver\Contracts\DidResolver;
+use SocialDept\Resolver\Contracts\HandleResolver;
+use SocialDept\Resolver\Data\DidDocument;
 
-class BeaconIdentityTest extends TestCase
+class ResolverIdentityTest extends TestCase
 {
     public function test_it_can_convert_handle_to_did(): void
     {
@@ -27,7 +27,7 @@ class BeaconIdentityTest extends TestCase
             ->method('put')
             ->with('handle:user.bsky.social', 'did:plc:abc123', $this->anything());
 
-        $beacon = new Beacon($didResolver, $handleResolver, $cache);
+        $beacon = new Resolver($didResolver, $handleResolver, $cache);
         $did = $beacon->handleToDid('user.bsky.social');
 
         $this->assertSame('did:plc:abc123', $did);
@@ -56,7 +56,7 @@ class BeaconIdentityTest extends TestCase
 
         $cache->method('has')->willReturn(false);
 
-        $beacon = new Beacon($didResolver, $handleResolver, $cache);
+        $beacon = new Resolver($didResolver, $handleResolver, $cache);
         $document = $beacon->resolveHandle('user.bsky.social');
 
         $this->assertInstanceOf(DidDocument::class, $document);
@@ -81,7 +81,7 @@ class BeaconIdentityTest extends TestCase
         $cache->method('has')->willReturn(false);
         $handleResolver->expects($this->never())->method('resolve');
 
-        $beacon = new Beacon($didResolver, $handleResolver, $cache);
+        $beacon = new Resolver($didResolver, $handleResolver, $cache);
         $document = $beacon->resolveIdentity('did:plc:abc123');
 
         $this->assertInstanceOf(DidDocument::class, $document);
@@ -111,7 +111,7 @@ class BeaconIdentityTest extends TestCase
 
         $cache->method('has')->willReturn(false);
 
-        $beacon = new Beacon($didResolver, $handleResolver, $cache);
+        $beacon = new Resolver($didResolver, $handleResolver, $cache);
         $document = $beacon->resolveIdentity('user.bsky.social');
 
         $this->assertInstanceOf(DidDocument::class, $document);

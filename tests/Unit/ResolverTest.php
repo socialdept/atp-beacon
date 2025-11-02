@@ -1,15 +1,15 @@
 <?php
 
-namespace SocialDept\Beacon\Tests\Unit;
+namespace SocialDept\Resolver\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SocialDept\Beacon\Beacon;
-use SocialDept\Beacon\Contracts\CacheStore;
-use SocialDept\Beacon\Contracts\DidResolver;
-use SocialDept\Beacon\Contracts\HandleResolver;
-use SocialDept\Beacon\Data\DidDocument;
+use SocialDept\Resolver\Resolver;
+use SocialDept\Resolver\Contracts\CacheStore;
+use SocialDept\Resolver\Contracts\DidResolver;
+use SocialDept\Resolver\Contracts\HandleResolver;
+use SocialDept\Resolver\Data\DidDocument;
 
-class BeaconTest extends TestCase
+class ResolverTest extends TestCase
 {
     public function test_it_can_resolve_pds_from_did(): void
     {
@@ -43,7 +43,7 @@ class BeaconTest extends TestCase
                 return null;
             });
 
-        $beacon = new Beacon($didResolver, $handleResolver, $cache);
+        $beacon = new Resolver($didResolver, $handleResolver, $cache);
         $pds = $beacon->resolvePds('did:plc:abc123');
 
         $this->assertSame('https://pds.example.com', $pds);
@@ -86,7 +86,7 @@ class BeaconTest extends TestCase
                 return null;
             });
 
-        $beacon = new Beacon($didResolver, $handleResolver, $cache);
+        $beacon = new Resolver($didResolver, $handleResolver, $cache);
         $pds = $beacon->resolvePds('user.bsky.social');
 
         $this->assertSame('https://pds.example.com', $pds);
@@ -115,7 +115,7 @@ class BeaconTest extends TestCase
             ->method('put')
             ->with('did:did:plc:abc123', $didDocument, $this->anything());
 
-        $beacon = new Beacon($didResolver, $handleResolver, $cache);
+        $beacon = new Resolver($didResolver, $handleResolver, $cache);
         $pds = $beacon->resolvePds('did:plc:abc123');
 
         $this->assertNull($pds);
@@ -139,7 +139,7 @@ class BeaconTest extends TestCase
 
         $didResolver->expects($this->never())->method('resolve');
 
-        $beacon = new Beacon($didResolver, $handleResolver, $cache);
+        $beacon = new Resolver($didResolver, $handleResolver, $cache);
         $pds = $beacon->resolvePds('did:plc:abc123');
 
         $this->assertSame('https://cached-pds.example.com', $pds);
@@ -155,7 +155,7 @@ class BeaconTest extends TestCase
             ->method('forget')
             ->with('pds:did:plc:abc123');
 
-        $beacon = new Beacon($didResolver, $handleResolver, $cache);
+        $beacon = new Resolver($didResolver, $handleResolver, $cache);
         $beacon->clearPdsCache('did:plc:abc123');
     }
 }

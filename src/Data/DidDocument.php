@@ -1,6 +1,6 @@
 <?php
 
-namespace SocialDept\Beacon\Data;
+namespace SocialDept\Resolver\Data;
 
 class DidDocument
 {

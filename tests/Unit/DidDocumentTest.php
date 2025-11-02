@@ -1,9 +1,9 @@
 <?php
 
-namespace SocialDept\Beacon\Tests\Unit;
+namespace SocialDept\Resolver\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SocialDept\Beacon\Data\DidDocument;
+use SocialDept\Resolver\Data\DidDocument;
 
 class DidDocumentTest extends TestCase
 {

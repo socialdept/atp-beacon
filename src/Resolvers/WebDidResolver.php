@@ -1,14 +1,14 @@
 <?php
 
-namespace SocialDept\Beacon\Resolvers;
+namespace SocialDept\Resolver\Resolvers;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use SocialDept\Beacon\Contracts\DidResolver;
-use SocialDept\Beacon\Data\DidDocument;
-use SocialDept\Beacon\Exceptions\DidResolutionException;
-use SocialDept\Beacon\Support\Concerns\HasConfig;
-use SocialDept\Beacon\Support\Concerns\ParsesDid;
+use SocialDept\Resolver\Contracts\DidResolver;
+use SocialDept\Resolver\Data\DidDocument;
+use SocialDept\Resolver\Exceptions\DidResolutionException;
+use SocialDept\Resolver\Support\Concerns\HasConfig;
+use SocialDept\Resolver\Support\Concerns\ParsesDid;
 
 class WebDidResolver implements DidResolver
 {
@@ -23,7 +23,7 @@ class WebDidResolver implements DidResolver
     public function __construct(?int $timeout = null)
     {
         $this->client = new Client([
-            'timeout' => $timeout ?? $this->getConfig('beacon.timeout', 10),
+            'timeout' => $timeout ?? $this->getConfig('resolver.timeout', 10),
             'headers' => [
                 'Accept' => 'application/json',
                 'User-Agent' => 'Beacon/1.0',

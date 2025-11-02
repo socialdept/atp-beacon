@@ -1,6 +1,6 @@
 <?php
 
-namespace SocialDept\Beacon\Contracts;
+namespace SocialDept\Resolver\Contracts;
 
 interface CacheStore
 {
