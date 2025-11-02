@@ -3,11 +3,11 @@
 namespace SocialDept\Resolver\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SocialDept\Resolver\Resolver;
 use SocialDept\Resolver\Contracts\CacheStore;
 use SocialDept\Resolver\Contracts\DidResolver;
 use SocialDept\Resolver\Contracts\HandleResolver;
 use SocialDept\Resolver\Data\DidDocument;
+use SocialDept\Resolver\Resolver;
 
 class ResolverIdentityTest extends TestCase
 {
