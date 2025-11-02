@@ -1,8 +1,8 @@
 <?php
 
-namespace SocialDept\Beacon\Support\Concerns;
+namespace SocialDept\Resolver\Support\Concerns;
 
-use SocialDept\Beacon\Exceptions\DidResolutionException;
+use SocialDept\Resolver\Exceptions\DidResolutionException;
 
 trait ParsesDid
 {

@@ -1,4 +1,4 @@
-[![Beacon Header](./header.png)](https://github.com/socialdept/atp-signals)
+[![Resolver Header](./header.png)](https://github.com/socialdept/atp-signals)
 
 <h3 align="center">
     Resolve AT Protocol identities in your Laravel application.
@@ -6,21 +6,21 @@
 
 <p align="center">
     <br>
-    <a href="https://packagist.org/packages/socialdept/atp-beacon" title="Latest Version on Packagist"><img src="https://img.shields.io/packagist/v/socialdept/atp-beacon.svg?style=flat-square"></a>
-    <a href="https://packagist.org/packages/socialdept/atp-beacon" title="Total Downloads"><img src="https://img.shields.io/packagist/dt/socialdept/atp-beacon.svg?style=flat-square"></a>
-    <a href="https://github.com/socialdept/atp-beacon/actions/workflows/tests.yml" title="GitHub Tests Action Status"><img src="https://img.shields.io/github/actions/workflow/status/socialdept/atp-beacon/tests.yml?branch=main&label=tests&style=flat-square"></a>
-    <a href="LICENSE" title="Software License"><img src="https://img.shields.io/github/license/socialdept/atp-beacon?style=flat-square"></a>
+    <a href="https://packagist.org/packages/socialdept/atp-resolver" title="Latest Version on Packagist"><img src="https://img.shields.io/packagist/v/socialdept/atp-resolver.svg?style=flat-square"></a>
+    <a href="https://packagist.org/packages/socialdept/atp-resolver" title="Total Downloads"><img src="https://img.shields.io/packagist/dt/socialdept/atp-resolver.svg?style=flat-square"></a>
+    <a href="https://github.com/socialdept/atp-resolver/actions/workflows/tests.yml" title="GitHub Tests Action Status"><img src="https://img.shields.io/github/actions/workflow/status/socialdept/atp-resolver/tests.yml?branch=main&label=tests&style=flat-square"></a>
+    <a href="LICENSE" title="Software License"><img src="https://img.shields.io/github/license/socialdept/atp-resolver?style=flat-square"></a>
 </p>
 
 ---
 
-## What is Beacon?
+## What is Resolver?
 
-**Beacon** is a Laravel package that resolves AT Protocol identities. Convert DIDs to handles, find PDS endpoints, and resolve DID documents with automatic caching and fallback support for both `did:plc` and `did:web` methods.
+**Resolver** is a Laravel package that resolves AT Protocol identities. Convert DIDs to handles, find PDS endpoints, and resolve DID documents with automatic caching and fallback support for both `did:plc` and `did:web` methods.
 
 Think of it as a Swiss Army knife for AT Protocol identity resolution.
 
-## Why use Beacon?
+## Why use Resolver?
 
 - **Simple API** - Resolve DIDs and handles with one method call
 - **Automatic caching** - Smart caching with configurable TTLs
@@ -32,51 +32,51 @@ Think of it as a Swiss Army knife for AT Protocol identity resolution.
 ## Quick Example
 
 ```php
-use SocialDept\Beacon\Facades\Beacon;
+use SocialDept\Resolver\Facades\Resolver;
 
 // Resolve a DID to its document
-$document = Beacon::resolveDid('did:plc:ewvi7nxzyoun6zhxrhs64oiz');
+$document = Resolver::resolveDid('did:plc:ewvi7nxzyoun6zhxrhs64oiz');
 $handle = $document->getHandle(); // "user.bsky.social"
 $pds = $document->getPdsEndpoint(); // "https://bsky.social"
 
 // Convert a handle to its DID
-$did = Beacon::handleToDid('user.bsky.social');
+$did = Resolver::handleToDid('user.bsky.social');
 // "did:plc:ewvi7nxzyoun6zhxrhs64oiz"
 
 // Resolve any identity (DID or handle) to a document
-$document = Beacon::resolveIdentity('alice.bsky.social');
+$document = Resolver::resolveIdentity('alice.bsky.social');
 
 // Find someone's PDS endpoint
-$pds = Beacon::resolvePds('alice.bsky.social');
+$pds = Resolver::resolvePds('alice.bsky.social');
 // "https://bsky.social"
 ```
 
 ## Installation
 
 ```bash
-composer require socialdept/atp-beacon
+composer require socialdept/atp-resolver
 ```
 
-Beacon will auto-register with Laravel. Optionally publish the config:
+Resolver will auto-register with Laravel. Optionally publish the config:
 
 ```bash
-php artisan vendor:publish --tag=beacon-config
+php artisan vendor:publish --tag=resolver-config
 ```
 
 ## Basic Usage
 
 ### Resolving DIDs
 
-Beacon supports both `did:plc` and `did:web` methods:
+Resolver supports both `did:plc` and `did:web` methods:
 
 ```php
-use SocialDept\Beacon\Facades\Beacon;
+use SocialDept\Resolver\Facades\Resolver;
 
 // PLC directory resolution
-$document = Beacon::resolveDid('did:plc:ewvi7nxzyoun6zhxrhs64oiz');
+$document = Resolver::resolveDid('did:plc:ewvi7nxzyoun6zhxrhs64oiz');
 
 // Web DID resolution
-$document = Beacon::resolveDid('did:web:example.com');
+$document = Resolver::resolveDid('did:web:example.com');
 
 // Access document data
 $handle = $document->getHandle();
@@ -90,11 +90,11 @@ Convert human-readable handles to DIDs or DID documents:
 
 ```php
 // Convert handle to DID string
-$did = Beacon::handleToDid('alice.bsky.social');
+$did = Resolver::handleToDid('alice.bsky.social');
 // "did:plc:ewvi7nxzyoun6zhxrhs64oiz"
 
 // Resolve handle to full DID document
-$document = Beacon::resolveHandle('alice.bsky.social');
+$document = Resolver::resolveHandle('alice.bsky.social');
 $handle = $document->getHandle();
 $pds = $document->getPdsEndpoint();
 ```
@@ -105,14 +105,14 @@ Automatically detect and resolve either DIDs or handles:
 
 ```php
 // Works with DIDs
-$document = Beacon::resolveIdentity('did:plc:ewvi7nxzyoun6zhxrhs64oiz');
+$document = Resolver::resolveIdentity('did:plc:ewvi7nxzyoun6zhxrhs64oiz');
 
 // Works with handles
-$document = Beacon::resolveIdentity('alice.bsky.social');
+$document = Resolver::resolveIdentity('alice.bsky.social');
 
 // Perfect for user input where type is unknown
 $actor = $request->input('actor'); // Could be DID or handle
-$document = Beacon::resolveIdentity($actor);
+$document = Resolver::resolveIdentity($actor);
 ```
 
 ### Finding PDS Endpoints
@@ -121,10 +121,10 @@ Automatically discover a user's Personal Data Server:
 
 ```php
 // From a DID
-$pds = Beacon::resolvePds('did:plc:ewvi7nxzyoun6zhxrhs64oiz');
+$pds = Resolver::resolvePds('did:plc:ewvi7nxzyoun6zhxrhs64oiz');
 
 // From a handle
-$pds = Beacon::resolvePds('alice.bsky.social');
+$pds = Resolver::resolvePds('alice.bsky.social');
 
 // Returns: "https://bsky.social" or user's custom PDS
 ```
@@ -137,16 +137,16 @@ Beacon automatically caches resolutions. Clear the cache when needed:
 
 ```php
 // Clear specific DID cache
-Beacon::clearDidCache('did:plc:abc123');
+Resolver::clearDidCache('did:plc:abc123');
 
 // Clear specific handle cache
-Beacon::clearHandleCache('alice.bsky.social');
+Resolver::clearHandleCache('alice.bsky.social');
 
 // Clear specific PDS cache
-Beacon::clearPdsCache('alice.bsky.social');
+Resolver::clearPdsCache('alice.bsky.social');
 
 // Clear all cached data
-Beacon::clearCache();
+Resolver::clearCache();
 ```
 
 ### Disable Caching
@@ -154,10 +154,10 @@ Beacon::clearCache();
 Pass `false` as the second parameter to bypass cache:
 
 ```php
-$document = Beacon::resolveDid('did:plc:abc123', useCache: false);
-$did = Beacon::handleToDid('alice.bsky.social', useCache: false);
-$document = Beacon::resolveIdentity('alice.bsky.social', useCache: false);
-$pds = Beacon::resolvePds('alice.bsky.social', useCache: false);
+$document = Resolver::resolveDid('did:plc:abc123', useCache: false);
+$did = Resolver::handleToDid('alice.bsky.social', useCache: false);
+$document = Resolver::resolveIdentity('alice.bsky.social', useCache: false);
+$pds = Resolver::resolvePds('alice.bsky.social', useCache: false);
 ```
 
 ### Identity Validation
@@ -165,7 +165,7 @@ $pds = Beacon::resolvePds('alice.bsky.social', useCache: false);
 Beacon includes static helper methods to validate DIDs and handles:
 
 ```php
-use SocialDept\Beacon\Support\Identity;
+use SocialDept\Resolver\Support\Identity;
 
 // Validate handles
 Identity::isHandle('alice.bsky.social'); // true
@@ -189,31 +189,31 @@ These helpers are useful for validating user input before making resolution call
 
 ## Configuration
 
-Beacon works great with zero configuration, but you can customize behavior in `config/beacon.php`:
+Beacon works great with zero configuration, but you can customize behavior in `config/resolver.php`:
 
 ```php
 return [
     // PLC directory for did:plc resolution
-    'plc_directory' => env('BEACON_PLC_DIRECTORY', 'https://plc.directory'),
+    'plc_directory' => env('RESOLVER_PLC_DIRECTORY', 'https://plc.directory'),
 
     // Default PDS endpoint for handle resolution
-    'pds_endpoint' => env('BEACON_PDS_ENDPOINT', 'https://bsky.social'),
+    'pds_endpoint' => env('RESOLVER_PDS_ENDPOINT', 'https://bsky.social'),
 
     // HTTP request timeout
-    'timeout' => env('BEACON_TIMEOUT', 10),
+    'timeout' => env('RESOLVER_TIMEOUT', 10),
 
     // Cache configuration
     'cache' => [
-        'enabled' => env('BEACON_CACHE_ENABLED', true),
+        'enabled' => env('RESOLVER_CACHE_ENABLED', true),
 
         // Cache TTL for DID documents (1 hour)
-        'did_ttl' => env('BEACON_CACHE_DID_TTL', 3600),
+        'did_ttl' => env('RESOLVER_CACHE_DID_TTL', 3600),
 
         // Cache TTL for handle resolutions (1 hour)
-        'handle_ttl' => env('BEACON_CACHE_HANDLE_TTL', 3600),
+        'handle_ttl' => env('RESOLVER_CACHE_HANDLE_TTL', 3600),
 
         // Cache TTL for PDS endpoints (1 hour)
-        'pds_ttl' => env('BEACON_CACHE_PDS_TTL', 3600),
+        'pds_ttl' => env('RESOLVER_CACHE_PDS_TTL', 3600),
     ],
 ];
 ```
@@ -224,23 +224,23 @@ return [
 
 ```php
 // DID Resolution
-Beacon::resolveDid(string $did, bool $useCache = true): DidDocument
+Resolver::resolveDid(string $did, bool $useCache = true): DidDocument
 
 // Handle Resolution
-Beacon::handleToDid(string $handle, bool $useCache = true): string
-Beacon::resolveHandle(string $handle, bool $useCache = true): DidDocument
+Resolver::handleToDid(string $handle, bool $useCache = true): string
+Resolver::resolveHandle(string $handle, bool $useCache = true): DidDocument
 
 // Identity Resolution
-Beacon::resolveIdentity(string $actor, bool $useCache = true): DidDocument
+Resolver::resolveIdentity(string $actor, bool $useCache = true): DidDocument
 
 // PDS Resolution
-Beacon::resolvePds(string $actor, bool $useCache = true): ?string
+Resolver::resolvePds(string $actor, bool $useCache = true): ?string
 
 // Cache Management
-Beacon::clearDidCache(string $did): void
-Beacon::clearHandleCache(string $handle): void
-Beacon::clearPdsCache(string $actor): void
-Beacon::clearCache(): void
+Resolver::clearDidCache(string $did): void
+Resolver::clearHandleCache(string $handle): void
+Resolver::clearPdsCache(string $actor): void
+Resolver::clearCache(): void
 
 // Identity Validation (static helpers)
 Identity::isHandle(?string $handle): bool
@@ -270,11 +270,11 @@ $document->toArray();             // array - Convert to array
 Beacon throws descriptive exceptions when resolution fails:
 
 ```php
-use SocialDept\Beacon\Exceptions\DidResolutionException;
-use SocialDept\Beacon\Exceptions\HandleResolutionException;
+use SocialDept\Resolver\Exceptions\DidResolutionException;
+use SocialDept\Resolver\Exceptions\HandleResolutionException;
 
 try {
-    $document = Beacon::resolveDid('did:invalid:format');
+    $document = Resolver::resolveDid('did:invalid:format');
 } catch (DidResolutionException $e) {
     // Handle DID resolution errors
     logger()->error('DID resolution failed', [
@@ -283,7 +283,7 @@ try {
 }
 
 try {
-    $did = Beacon::handleToDid('invalid-handle');
+    $did = Resolver::handleToDid('invalid-handle');
 } catch (HandleResolutionException $e) {
     // Handle handle resolution errors
 }
@@ -295,11 +295,11 @@ try {
 
 ```php
 // Resolve user identity from DID
-$document = Beacon::resolveDid($event->did);
+$document = Resolver::resolveDid($event->did);
 $handle = $document->getHandle();
 
 // Make authenticated requests to their PDS
-$pds = Beacon::resolvePds($event->did);
+$pds = Resolver::resolvePds($event->did);
 $client = new AtProtoClient($pds);
 ```
 
@@ -308,7 +308,7 @@ $client = new AtProtoClient($pds);
 ```php
 // Resolve multiple handles efficiently (caching kicks in)
 $dids = collect(['alice.bsky.social', 'bob.bsky.social'])
-    ->map(fn($handle) => Beacon::handleToDid($handle))
+    ->map(fn($handle) => Resolver::handleToDid($handle))
     ->all();
 ```
 
@@ -316,7 +316,7 @@ $dids = collect(['alice.bsky.social', 'bob.bsky.social'])
 
 ```php
 // Get complete identity information
-$document = Beacon::resolveIdentity($username);
+$document = Resolver::resolveIdentity($username);
 
 $profile = [
     'did' => $document->id,
@@ -328,21 +328,21 @@ $profile = [
 ### Input Validation
 
 ```php
-use SocialDept\Beacon\Support\Identity;
-use SocialDept\Beacon\Facades\Beacon;
+use SocialDept\Resolver\Support\Identity;
+use SocialDept\Resolver\Facades\Resolver;
 
 // Validate user input before resolving
 $actor = request()->input('actor');
 
 if (Identity::isHandle($actor) || Identity::isDid($actor)) {
-    $document = Beacon::resolveIdentity($actor);
+    $document = Resolver::resolveIdentity($actor);
 } else {
     abort(422, 'Invalid handle or DID');
 }
 
 // Or convert handle to DID
 if (Identity::isHandle($actor)) {
-    $did = Beacon::handleToDid($actor);
+    $did = Resolver::handleToDid($actor);
 }
 ```
 
@@ -361,14 +361,14 @@ if (Identity::isHandle($actor)) {
 
 ## Support & Contributing
 
-Found a bug or have a feature request? [Open an issue](https://github.com/socialdept/atp-beacon/issues).
+Found a bug or have a feature request? [Open an issue](https://github.com/socialdept/atp-resolver/issues).
 
 Want to contribute? We'd love your help! Check out the [contribution guidelines](CONTRIBUTING.md).
 
 ## Credits
 
 - [Miguel Batres](https://batres.co) - founder & lead maintainer
-- [All contributors](https://github.com/socialdept/atp-beacon/graphs/contributors)
+- [All contributors](https://github.com/socialdept/atp-resolver/graphs/contributors)
 
 ## License
 

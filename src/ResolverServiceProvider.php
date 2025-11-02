@@ -1,23 +1,23 @@
 <?php
 
-namespace SocialDept\Beacon;
+namespace SocialDept\Resolver;
 
 use Illuminate\Support\ServiceProvider;
-use SocialDept\Beacon\Cache\LaravelCacheStore;
-use SocialDept\Beacon\Contracts\CacheStore;
-use SocialDept\Beacon\Contracts\DidResolver;
-use SocialDept\Beacon\Contracts\HandleResolver;
-use SocialDept\Beacon\Resolvers\AtProtoHandleResolver;
-use SocialDept\Beacon\Resolvers\DidResolverManager;
+use SocialDept\Resolver\Cache\LaravelCacheStore;
+use SocialDept\Resolver\Contracts\CacheStore;
+use SocialDept\Resolver\Contracts\DidResolver;
+use SocialDept\Resolver\Contracts\HandleResolver;
+use SocialDept\Resolver\Resolvers\AtProtoHandleResolver;
+use SocialDept\Resolver\Resolvers\DidResolverManager;
 
-class BeaconServiceProvider extends ServiceProvider
+class ResolverServiceProvider extends ServiceProvider
 {
     /**
      * Register any package services.
      */
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/beacon.php', 'beacon');
+        $this->mergeConfigFrom(__DIR__.'/../config/resolver.php', 'resolver');
 
         // Register cache store
         $this->app->singleton(CacheStore::class, function ($app) {
@@ -34,16 +34,16 @@ class BeaconServiceProvider extends ServiceProvider
             return new AtProtoHandleResolver();
         });
 
-        // Register Beacon service
-        $this->app->singleton('beacon', function ($app) {
-            return new Beacon(
+        // Register Resolver service
+        $this->app->singleton('resolver', function ($app) {
+            return new Resolver(
                 $app->make(DidResolver::class),
                 $app->make(HandleResolver::class),
                 $app->make(CacheStore::class),
             );
         });
 
-        $this->app->alias('beacon', Beacon::class);
+        $this->app->alias('resolver', Resolver::class);
     }
 
     /**
@@ -63,7 +63,7 @@ class BeaconServiceProvider extends ServiceProvider
      */
     public function provides(): array
     {
-        return ['beacon', Beacon::class];
+        return ['resolver', Resolver::class];
     }
 
     /**
@@ -73,7 +73,7 @@ class BeaconServiceProvider extends ServiceProvider
     {
         // Publish config
         $this->publishes([
-            __DIR__.'/../config/beacon.php' => config_path('beacon.php'),
-        ], 'beacon-config');
+            __DIR__.'/../config/resolver.php' => config_path('resolver.php'),
+        ], 'resolver-config');
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace SocialDept\Beacon\Exceptions;
+namespace SocialDept\Resolver\Exceptions;
 
-class DidResolutionException extends BeaconException
+class DidResolutionException extends ResolverException
 {
     /**
      * Create a new exception for unsupported DID method.

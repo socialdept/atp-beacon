@@ -1,12 +1,12 @@
 <?php
 
-namespace SocialDept\Beacon\Tests\Unit;
+namespace SocialDept\Resolver\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SocialDept\Beacon\Contracts\DidResolver;
-use SocialDept\Beacon\Data\DidDocument;
-use SocialDept\Beacon\Exceptions\DidResolutionException;
-use SocialDept\Beacon\Resolvers\DidResolverManager;
+use SocialDept\Resolver\Contracts\DidResolver;
+use SocialDept\Resolver\Data\DidDocument;
+use SocialDept\Resolver\Exceptions\DidResolutionException;
+use SocialDept\Resolver\Resolvers\DidResolverManager;
 
 class DidResolverManagerTest extends TestCase
 {

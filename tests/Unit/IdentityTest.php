@@ -1,9 +1,9 @@
 <?php
 
-namespace SocialDept\Beacon\Tests\Unit;
+namespace SocialDept\Resolver\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SocialDept\Beacon\Support\Identity;
+use SocialDept\Resolver\Support\Identity;
 
 class IdentityTest extends TestCase
 {

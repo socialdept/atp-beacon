@@ -1,6 +1,6 @@
 <?php
 
-namespace SocialDept\Beacon\Support;
+namespace SocialDept\Resolver\Support;
 
 class Identity
 {

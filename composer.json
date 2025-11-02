@@ -1,6 +1,6 @@
 {
-    "name": "socialdept/atp-beacon",
-    "description": "Resolve AT Protocol DIDs, handles, and lexicon schemas in Laravel",
+    "name": "socialdept/atp-resolver",
+    "description": "Resolve AT Protocol DIDs and handles in Laravel",
     "type": "library",
     "license": "MIT",
     "require": {
@@ -18,21 +18,21 @@
     },
     "autoload": {
         "psr-4": {
-            "SocialDept\\Beacon\\": "src/"
+            "SocialDept\\Resolver\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "SocialDept\\Beacon\\Tests\\": "tests/"
+            "SocialDept\\Resolver\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "SocialDept\\Beacon\\BeaconServiceProvider"
+                "SocialDept\\Resolver\\ResolverServiceProvider"
             ],
             "aliases": {
-                "Beacon": "SocialDept\\Beacon\\Facades\\Beacon"
+                "Resolver": "SocialDept\\Resolver\\Facades\\Resolver"
             }
         }
     }

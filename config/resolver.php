@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'plc_directory' => env('BEACON_PLC_DIRECTORY', 'https://plc.directory'),
+    'plc_directory' => env('RESOLVER_PLC_DIRECTORY', 'https://plc.directory'),
 
     /*
     |--------------------------------------------------------------------------
@@ -25,7 +25,7 @@ return [
     |
     */
 
-    'pds_endpoint' => env('BEACON_PDS_ENDPOINT', 'https://bsky.social'),
+    'pds_endpoint' => env('RESOLVER_PDS_ENDPOINT', 'https://bsky.social'),
 
     /*
     |--------------------------------------------------------------------------
@@ -33,18 +33,18 @@ return [
     |--------------------------------------------------------------------------
     |
     | The timeout in seconds for HTTP requests to external services when
-    | resolving DIDs, handles, and lexicons.
+    | resolving DIDs and handles.
     |
     */
 
-    'timeout' => env('BEACON_TIMEOUT', 10),
+    'timeout' => env('RESOLVER_TIMEOUT', 10),
 
     /*
     |--------------------------------------------------------------------------
     | Cache Configuration
     |--------------------------------------------------------------------------
     |
-    | Configure caching behavior for resolved DIDs, handles, and lexicons.
+    | Configure caching behavior for resolved DIDs and handles.
     | TTL values are in seconds.
     |
     */
@@ -52,19 +52,16 @@ return [
     'cache' => [
 
         // Enable or disable caching globally
-        'enabled' => env('BEACON_CACHE_ENABLED', true),
+        'enabled' => env('RESOLVER_CACHE_ENABLED', true),
 
         // Cache TTL for DID documents (1 hour default)
-        'did_ttl' => env('BEACON_CACHE_DID_TTL', 3600),
+        'did_ttl' => env('RESOLVER_CACHE_DID_TTL', 3600),
 
         // Cache TTL for handle resolutions (1 hour default)
-        'handle_ttl' => env('BEACON_CACHE_HANDLE_TTL', 3600),
+        'handle_ttl' => env('RESOLVER_CACHE_HANDLE_TTL', 3600),
 
         // Cache TTL for PDS endpoints (1 hour default)
-        'pds_ttl' => env('BEACON_CACHE_PDS_TTL', 3600),
-
-        // Cache TTL for lexicon schemas (24 hours default)
-        'lexicon_ttl' => env('BEACON_CACHE_LEXICON_TTL', 86400),
+        'pds_ttl' => env('RESOLVER_CACHE_PDS_TTL', 3600),
 
     ],
 

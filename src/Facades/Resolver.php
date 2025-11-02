@@ -1,10 +1,10 @@
 <?php
 
-namespace SocialDept\Beacon\Facades;
+namespace SocialDept\Resolver\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class Beacon extends Facade
+class Resolver extends Facade
 {
     /**
      * Get the registered name of the component.
@@ -13,6 +13,6 @@ class Beacon extends Facade
      */
     protected static function getFacadeAccessor(): string
     {
-        return 'beacon';
+        return 'resolver';
     }
 }

@@ -1,22 +1,22 @@
 <?php
 
-namespace SocialDept\Beacon;
+namespace SocialDept\Resolver;
 
-use SocialDept\Beacon\Contracts\CacheStore;
-use SocialDept\Beacon\Contracts\DidResolver;
-use SocialDept\Beacon\Contracts\HandleResolver;
-use SocialDept\Beacon\Data\DidDocument;
-use SocialDept\Beacon\Exceptions\DidResolutionException;
-use SocialDept\Beacon\Exceptions\HandleResolutionException;
-use SocialDept\Beacon\Support\Concerns\HasConfig;
-use SocialDept\Beacon\Support\Identity;
+use SocialDept\Resolver\Contracts\CacheStore;
+use SocialDept\Resolver\Contracts\DidResolver;
+use SocialDept\Resolver\Contracts\HandleResolver;
+use SocialDept\Resolver\Data\DidDocument;
+use SocialDept\Resolver\Exceptions\DidResolutionException;
+use SocialDept\Resolver\Exceptions\HandleResolutionException;
+use SocialDept\Resolver\Support\Concerns\HasConfig;
+use SocialDept\Resolver\Support\Identity;
 
-class Beacon
+class Resolver
 {
     use HasConfig;
 
     /**
-     * Create a new Beacon instance.
+     * Create a new Resolver instance.
      */
     public function __construct(
         protected DidResolver $didResolver,
@@ -48,7 +48,7 @@ class Beacon
         $document = $this->didResolver->resolve($did);
 
         if ($useCache) {
-            $ttl = $this->getConfig('beacon.cache.did_ttl', 3600);
+            $ttl = $this->getConfig('resolver.cache.did_ttl', 3600);
             $this->cache->put($cacheKey, $document, $ttl);
         }
 
@@ -74,7 +74,7 @@ class Beacon
         $did = $this->handleResolver->resolve($handle);
 
         if ($useCache) {
-            $ttl = $this->getConfig('beacon.cache.handle_ttl', 3600);
+            $ttl = $this->getConfig('resolver.cache.handle_ttl', 3600);
             $this->cache->put($cacheKey, $did, $ttl);
         }
 
@@ -164,7 +164,7 @@ class Beacon
         $pdsEndpoint = $document->getPdsEndpoint();
 
         if ($useCache && $pdsEndpoint !== null) {
-            $ttl = $this->getConfig('beacon.cache.pds_ttl', 3600);
+            $ttl = $this->getConfig('resolver.cache.pds_ttl', 3600);
             $this->cache->put($cacheKey, $pdsEndpoint, $ttl);
         }
 
